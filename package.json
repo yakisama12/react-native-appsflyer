@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AppsFlyerSDK/react-native-appsflyer.git"
+    "url": "https://github.com/yakisama12/react-native-appsflyer.git"
   },
   "author": "Appsflyer / Maxim Shoustin",
   "license": {
     "type": "MIT",
-    "url": "https://github.com/AppsFlyerSDK/react-native-appsflyer/blob/master/LICENSE"
+    "url": "https://github.com/yakisama12/react-native-appsflyer/blob/master/LICENSE"
   },
-  "homepage": "https://github.com/AppsFlyerSDK/react-native-appsflyer#readme",
+  "homepage": "https://github.com/yakisama12/react-native-appsflyer#readme",
   "keywords": [
     "react-native",
     "react",
@@ -32,6 +32,6 @@
     "appsflyer"
   ],
   "bugs": {
-    "url": "https://github.com/AppsFlyerSDK/react-native-appsflyer/issues"
+    "url": "https://github.com/yakisama12/react-native-appsflyer/issues"
   }
 }

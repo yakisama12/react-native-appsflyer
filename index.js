@@ -17,6 +17,10 @@ appsFlyer.initSdk = (options, successC, errorC) => {
     return RNAppsFlyer.initSdk(options, successC, errorC);
 };
 
+appsFlyer.generateInviteLink = (options, successC, errorC) => {
+    return RNAppsFlyer.generateInviteLink(options, successC, errorC);
+}
+
 /**
  * iOS only
  */

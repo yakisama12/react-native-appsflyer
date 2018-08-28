@@ -18,9 +18,14 @@
   #define afDevKey                        @"devKey"
   #define afAppId                         @"appId"
   #define afIsDebug                       @"isDebug"
+  #define afInviteOneLink                 @"inviteOneLink"
 
   #define afEmailsCryptType               @"emailsCryptType"
   #define afEmails                        @"emails"
+
+  #define afChannelName                   @"channelName"
+  #define afReferrerName                  @"referrerName"
+  #define afPromoCode                     @"promoCode"
 
 // Appsflyer native objects
   #define afConversionData                @"onInstallConversionDataListener"

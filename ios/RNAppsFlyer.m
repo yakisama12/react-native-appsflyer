@@ -34,6 +34,7 @@ RCT_EXPORT_METHOD(initSdk: (NSDictionary*)initSdkOptions
     
     NSString* devKey = nil;
     NSString* appId = nil;
+    NSString* inviteOneLink = nil;
     BOOL isDebug = NO;
     BOOL isConversionData = NO;
 
@@ -43,6 +44,7 @@ RCT_EXPORT_METHOD(initSdk: (NSDictionary*)initSdkOptions
         id isConversionDataValue = nil;
         devKey = (NSString*)[initSdkOptions objectForKey: afDevKey];
         appId = (NSString*)[initSdkOptions objectForKey: afAppId];
+        inviteOneLink = (NSString*)[initSdkOptions objectForKey: afInviteOneLink];
 
         isDebugValue = [initSdkOptions objectForKey: afIsDebug];
         if ([isDebugValue isKindOfClass:[NSNumber class]]) {
@@ -69,7 +71,7 @@ RCT_EXPORT_METHOD(initSdk: (NSDictionary*)initSdkOptions
     if(error != nil){
         errorCallback(error);
     }
-    else{
+    else {
         if(isConversionData == YES){
             [AppsFlyerTracker sharedTracker].delegate = self;
         }
@@ -78,9 +80,13 @@ RCT_EXPORT_METHOD(initSdk: (NSDictionary*)initSdkOptions
         [AppsFlyerTracker sharedTracker].appsFlyerDevKey = devKey;
         [AppsFlyerTracker sharedTracker].isDebug = isDebug;
         [[AppsFlyerTracker sharedTracker] trackAppLaunch];
+
+        if (inviteOneLink) {
+            [AppsFlyerTracker sharedTracker].appInviteOneLinkID = inviteOneLink;
+        }
         
         successCallback(@[SUCCESS]);
-                }
+    }
 }
 
 RCT_EXPORT_METHOD(trackAppLaunch)
@@ -88,6 +94,46 @@ RCT_EXPORT_METHOD(trackAppLaunch)
     [[AppsFlyerTracker sharedTracker] trackAppLaunch];
 }
 
+RCT_EXPORT_METHOD(generateInviteLink:(NSDictionary*)options
+                  successCallback :(RCTResponseSenderBlock)successCallback
+                  errorCallback:(RCTResponseErrorBlock)errorCallback
+                  )
+{
+    NSString* channelName = nil;
+    NSString* referrerName = nil;
+    NSString* promoCode = nil;
+
+    if (![options isKindOfClass:[NSNull class]]) {
+
+        channelName = (NSString*)[options objectForKey: afChannelName];
+        referrerName = (NSString*)[options objectForKey: afReferrerName];
+        promoCode = (NSString*)[options objectForKey: afPromoCode];
+    }
+
+    NSError* error = nil;
+
+//    if (!channelName || [channelName isEqualToString:@""]) {
+//        error = [NSError errorWithDomain:NO_DEVKEY_FOUND code:0 userInfo:nil];
+//
+//    }
+//    else if (!referrerName || [referrerName isEqualToString:@""]) {
+//        error = [NSError errorWithDomain:NO_APPID_FOUND code:1 userInfo:nil];
+//    }
+
+    if(error != nil){
+        errorCallback(error);
+    }
+
+    [AppsFlyerShareInviteHelper generateInviteUrlWithLinkGenerator:^AppsFlyerLinkGenerator * _Nonnull(AppsFlyerLinkGenerator * _Nonnull generator) {
+        [generator setChannel:channelName];
+        [generator setReferrerName:referrerName];
+        [generator addParameterValue:promoCode forKey:@"promo_code"];
+        return generator;
+    } completionHandler:^(NSURL * _Nullable url) {
+        /* share To App … */
+        successCallback(@[url.absoluteString]);
+    }];
+}
 
 RCT_EXPORT_METHOD(trackEvent: (NSString *)eventName eventValues:(NSDictionary *)eventValues
                   successCallback :(RCTResponseSenderBlock)successCallback
