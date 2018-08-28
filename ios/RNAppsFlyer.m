@@ -101,13 +101,12 @@ RCT_EXPORT_METHOD(generateInviteLink:(NSDictionary*)options
 {
     NSString* channelName = nil;
     NSString* referrerName = nil;
-    NSString* promoCode = nil;
+    NSDictionary* extraParams = nil;
 
     if (![options isKindOfClass:[NSNull class]]) {
-
         channelName = (NSString*)[options objectForKey: afChannelName];
         referrerName = (NSString*)[options objectForKey: afReferrerName];
-        promoCode = (NSString*)[options objectForKey: afPromoCode];
+        extraParams = (NSDictionary*)[options objectForKey: afExtraParams];
     }
 
     NSError* error = nil;
@@ -127,7 +126,9 @@ RCT_EXPORT_METHOD(generateInviteLink:(NSDictionary*)options
     [AppsFlyerShareInviteHelper generateInviteUrlWithLinkGenerator:^AppsFlyerLinkGenerator * _Nonnull(AppsFlyerLinkGenerator * _Nonnull generator) {
         [generator setChannel:channelName];
         [generator setReferrerName:referrerName];
-        [generator addParameterValue:promoCode forKey:@"promo_code"];
+        if (![extraParams isKindOfClass:[NSNull class]]) {
+            [generator addParameters:extraParams];
+        }
         return generator;
     } completionHandler:^(NSURL * _Nullable url) {
         /* share To App … */

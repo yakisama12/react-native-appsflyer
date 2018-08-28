@@ -25,7 +25,7 @@
 
   #define afChannelName                   @"channelName"
   #define afReferrerName                  @"referrerName"
-  #define afPromoCode                     @"promoCode"
+  #define afExtraParams                   @"extraParams"
 
 // Appsflyer native objects
   #define afConversionData                @"onInstallConversionDataListener"
